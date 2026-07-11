@@ -397,6 +397,233 @@
     padding-top:16px;
     border-top:1px solid var(--line);
   }
+
+  /* ===== VOICE SETTINGS ===== */
+  .voice-bar{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 20px;
+    margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .voice-bar .vb-label{
+    font-size:13px;
+    font-weight:700;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .engine-group{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    flex:1;
+  }
+  .engine-btn{
+    padding:7px 16px;
+    border-radius:9px;
+    border:1.5px solid var(--line);
+    background:var(--bg);
+    font-family:'Tajawal',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    color:var(--muted);
+    cursor:pointer;
+    transition:.2s;
+  }
+  .engine-btn:hover{ border-color:var(--primary); color:var(--primary); }
+  .engine-btn.active{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+  .engine-btn .badge{
+    display:inline-block;
+    background:var(--accent);
+    color:#fff;
+    font-size:9px;
+    font-weight:800;
+    padding:1px 5px;
+    border-radius:5px;
+    margin-right:5px;
+    vertical-align:middle;
+  }
+  .btn-test-voice{
+    padding:7px 14px;
+    border-radius:9px;
+    border:1.5px solid var(--primary);
+    background:transparent;
+    color:var(--primary);
+    font-family:'Tajawal',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+    transition:.2s;
+    white-space:nowrap;
+  }
+  .btn-test-voice:hover{ background:var(--primary); color:#fff; }
+  .voice-status{
+    font-size:12px;
+    color:var(--muted);
+    padding:4px 10px;
+    border-radius:8px;
+    background:var(--bg);
+    white-space:nowrap;
+  }
+  .voice-status.speaking{ color:var(--primary); background:rgba(14,124,134,0.1); }
+
+  /* ===== AI PANEL ===== */
+  .ai-panel{
+    background:linear-gradient(135deg,#0d1117 0%,#0e2a3a 100%);
+    border:1px solid rgba(0,220,180,0.25);
+    border-radius:var(--radius);
+    padding:20px;
+    margin-bottom:22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .ai-panel::before{
+    content:'';
+    position:absolute;
+    top:-60px;right:-60px;
+    width:200px;height:200px;
+    background:radial-gradient(circle,rgba(0,220,180,0.12),transparent 70%);
+    pointer-events:none;
+  }
+  .ai-header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .ai-icon{
+    width:40px;height:40px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00dcb4,#0e7c86);
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;
+    flex-shrink:0;
+    box-shadow:0 0 18px rgba(0,220,180,0.4);
+    animation:aipulse 2.5s ease-in-out infinite;
+  }
+  @keyframes aipulse{
+    0%,100%{box-shadow:0 0 10px rgba(0,220,180,0.3);}
+    50%{box-shadow:0 0 28px rgba(0,220,180,0.7);}
+  }
+  .ai-title{
+    flex:1;
+  }
+  .ai-title h3{
+    margin:0;
+    font-family:'Cairo',sans-serif;
+    font-size:15px;
+    font-weight:800;
+    color:#e0faf5;
+  }
+  .ai-title p{
+    margin:2px 0 0;
+    font-size:11px;
+    color:rgba(0,220,180,0.7);
+  }
+  .ai-badge{
+    background:linear-gradient(135deg,#00dcb4,#0e9e8a);
+    color:#fff;
+    font-size:10px;
+    font-weight:800;
+    padding:3px 10px;
+    border-radius:20px;
+    letter-spacing:1px;
+  }
+  .ai-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  @media(max-width:600px){ .ai-grid{grid-template-columns:1fr 1fr;} }
+  .ai-stat{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(0,220,180,0.15);
+    border-radius:12px;
+    padding:12px 14px;
+  }
+  .ai-stat .s-val{
+    font-family:'Cairo',sans-serif;
+    font-size:22px;
+    font-weight:800;
+    color:#00dcb4;
+    line-height:1;
+  }
+  .ai-stat .s-lbl{
+    font-size:11px;
+    color:rgba(255,255,255,0.5);
+    margin-top:4px;
+  }
+  .ai-insight{
+    background:rgba(0,220,180,0.07);
+    border:1px solid rgba(0,220,180,0.2);
+    border-radius:12px;
+    padding:12px 16px;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .ai-insight .ins-icon{ font-size:18px; flex-shrink:0; margin-top:1px; }
+  .ai-insight .ins-text{ font-size:13px; color:rgba(255,255,255,0.8); line-height:1.5; }
+  .ai-insight .ins-text strong{ color:#00dcb4; }
+  .ai-suggest-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:4px;
+  }
+  .ai-suggest-row .s-label{
+    font-size:12px;
+    color:rgba(255,255,255,0.5);
+  }
+  .ai-suggest-bed{
+    padding:5px 14px;
+    border-radius:8px;
+    border:1.5px solid rgba(0,220,180,0.4);
+    background:rgba(0,220,180,0.1);
+    color:#00dcb4;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+    transition:.2s;
+  }
+  .ai-suggest-bed:hover{ background:rgba(0,220,180,0.25); }
+  .ai-suggest-bed.best{
+    background:rgba(0,220,180,0.2);
+    border-color:#00dcb4;
+    box-shadow:0 0 10px rgba(0,220,180,0.2);
+  }
+  .ai-thinking{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:11px;
+    color:rgba(0,220,180,0.6);
+    margin-top:8px;
+  }
+  .ai-dot{
+    width:5px;height:5px;
+    border-radius:50%;
+    background:#00dcb4;
+    animation:dotpulse 1.2s ease-in-out infinite;
+  }
+  .ai-dot:nth-child(2){animation-delay:.2s;}
+  .ai-dot:nth-child(3){animation-delay:.4s;}
+  @keyframes dotpulse{
+    0%,100%{opacity:.2;transform:scale(0.8);}
+    50%{opacity:1;transform:scale(1.2);}
+  }
 </style>
 </head>
 <body>
@@ -413,6 +640,63 @@
     <div class="tabs">
       <button id="tab-panel" class="active">لوحة التحكم</button>
       <button id="tab-screen">شاشة العرض</button>
+    </div>
+  </div>
+
+  <!-- ===== VOICE SETTINGS BAR ===== -->
+  <div class="voice-bar" id="voice-bar">
+    <span class="vb-label">🔊 محرك الصوت:</span>
+    <div class="engine-group">
+      <button class="engine-btn active" id="eng-gtts" onclick="setEngine('gtts')">
+        <span class="badge">مُوصى</span>Google TTS
+      </button>
+      <button class="engine-btn" id="eng-browser" onclick="setEngine('browser')">
+        متصفح (Web Speech)
+      </button>
+    </div>
+    <button class="btn-test-voice" onclick="testVoice()">🎧 تجربة الصوت</button>
+    <span class="voice-status" id="voice-status">جاهز</span>
+  </div>
+
+  <!-- ===== AI PANEL ===== -->
+  <div class="ai-panel" id="ai-panel">
+    <div class="ai-header">
+      <div class="ai-icon">🤖</div>
+      <div class="ai-title">
+        <h3>المساعد الذكي</h3>
+        <p>يحلل النداءات ويوصي بأفضل سرير</p>
+      </div>
+      <span class="ai-badge">AI</span>
+    </div>
+
+    <div class="ai-grid">
+      <div class="ai-stat">
+        <div class="s-val" id="ai-total">0</div>
+        <div class="s-lbl">إجمالي النداءات</div>
+      </div>
+      <div class="ai-stat">
+        <div class="s-val" id="ai-occupied">0</div>
+        <div class="s-lbl">أسرّة مشغولة</div>
+      </div>
+      <div class="ai-stat">
+        <div class="s-val" id="ai-free">16</div>
+        <div class="s-lbl">أسرّة متاحة</div>
+      </div>
+    </div>
+
+    <div class="ai-insight" id="ai-insight">
+      <span class="ins-icon">💡</span>
+      <span class="ins-text" id="ai-msg">في انتظار البيانات...</span>
+    </div>
+
+    <div class="ai-suggest-row">
+      <span class="s-label">توصية الذكاء الاصطناعي:</span>
+      <div id="ai-suggest-beds"></div>
+    </div>
+
+    <div class="ai-thinking">
+      <div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>
+      <span id="ai-status">المساعد يعمل...</span>
     </div>
   </div>
 
@@ -620,8 +904,8 @@ function renderLog(){
 // ---------- Screen render ----------
 function renderScreen(){
   const last = state.history[state.history.length - 1];
-  document.getElementById('disp-number').textContent = last ? toArabicDigits(last.ticket) : '—';
-  document.getElementById('disp-bed').textContent = last ? toArabicDigits(last.bed) : '—';
+  document.getElementById('disp-number').textContent = last ? last.ticket : '—';
+  document.getElementById('disp-bed').textContent    = last ? last.bed    : '—';
 
   const strip = document.getElementById('history-strip');
   if(state.history.length === 0){
@@ -631,7 +915,7 @@ function renderScreen(){
     state.history.slice().reverse().slice(0, 12).forEach(item => {
       const chip = document.createElement('div');
       chip.className = 'history-chip';
-      chip.innerHTML = `<div class="n">${toArabicDigits(item.ticket)}</div><div class="b">سرير ${toArabicDigits(item.bed)}</div>`;
+      chip.innerHTML = `<div class="n">${item.ticket}</div><div class="b">سرير ${item.bed}</div>`;
       strip.appendChild(chip);
     });
   }
@@ -641,7 +925,7 @@ function renderScreen(){
   state.beds.forEach(bed => {
     const mini = document.createElement('div');
     mini.className = 'bed-mini' + (bed.occupied ? ' occupied' : '');
-    mini.textContent = toArabicDigits(bed.num);
+    mini.textContent = bed.num;
     overview.appendChild(mini);
   });
 }
@@ -659,30 +943,182 @@ function renderAll(){
 }
 function render(){ renderAll(); }
 
-// ---------- Announce (TTS) ----------
+// ============================================================
+// ===== HIGH-QUALITY TTS ENGINE =====
+// ============================================================
+
+let currentEngine = 'gtts'; // 'gtts' | 'browser'
 let arabicVoice = null;
+let isSpeaking = false;
+
+// --- Browser Web Speech (fallback) ---
 function pickVoice(){
+  if(!('speechSynthesis' in window)) return;
   const voices = speechSynthesis.getVoices();
-  arabicVoice = voices.find(v => v.lang && v.lang.startsWith('ar')) || null;
+  // Prefer high-quality Arabic voices
+  const preferred = [
+    v => v.lang === 'ar-SA' && v.name.toLowerCase().includes('zariyah'),
+    v => v.lang === 'ar-SA' && v.name.toLowerCase().includes('majed'),
+    v => v.lang === 'ar-SA',
+    v => v.lang && v.lang.startsWith('ar')
+  ];
+  for(const test of preferred){
+    const found = voices.find(test);
+    if(found){ arabicVoice = found; break; }
+  }
 }
 if('speechSynthesis' in window){
   pickVoice();
   speechSynthesis.onvoiceschanged = pickVoice;
 }
 
-function speakWith(text){
+// --- Google Translate TTS (Primary) ---
+// Uses Google's unofficial TTS endpoint - excellent Arabic quality
+let gttsAudio = null;
+
+function buildGttsSentences(text){
+  // Google TTS max ~200 chars per request; split at sentence boundaries
+  const MAX = 190;
+  if(text.length <= MAX) return [text];
+  const parts = [];
+  let cur = text;
+  while(cur.length > MAX){
+    let cut = cur.lastIndexOf('،', MAX);
+    if(cut < 0) cut = cur.lastIndexOf(' ', MAX);
+    if(cut < 0) cut = MAX;
+    parts.push(cur.slice(0, cut).trim());
+    cur = cur.slice(cut).trim();
+  }
+  if(cur) parts.push(cur);
+  return parts;
+}
+
+function gttsUrl(text, idx, total){
+  const params = new URLSearchParams({
+    ie: 'UTF-8',
+    q: text,
+    tl: 'ar',
+    total: total,
+    idx: idx,
+    textlen: text.length,
+    client: 'tw-ob',
+    prev: 'input',
+    ttsspeed: '0.85'
+  });
+  return `https://translate.google.com/translate_tts?${params}`;
+}
+
+async function speakWithGTTS(text){
+  setVoiceStatus('يتحدث...', true);
+  const parts = buildGttsSentences(text);
+  for(let i = 0; i < parts.length; i++){
+    await playGttsChunk(gttsUrl(parts[i], i, parts.length));
+  }
+  setVoiceStatus('جاهز', false);
+}
+
+function playGttsChunk(url){
+  return new Promise((resolve) => {
+    if(gttsAudio){
+      gttsAudio.pause();
+      gttsAudio.src = '';
+    }
+    gttsAudio = new Audio(url);
+    gttsAudio.crossOrigin = 'anonymous';
+    gttsAudio.onended = () => resolve();
+    gttsAudio.onerror = () => {
+      // Fallback to browser TTS if Google fails
+      console.warn('Google TTS failed, falling back to browser TTS');
+      speakWithBrowser(lastText);
+      resolve();
+    };
+    gttsAudio.play().catch(() => {
+      speakWithBrowser(lastText);
+      resolve();
+    });
+  });
+}
+
+// --- Browser TTS ---
+let lastText = '';
+function speakWithBrowser(text){
   if(!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = 'ar-SA';
   if(arabicVoice) utter.voice = arabicVoice;
-  utter.rate = 0.9;
+  utter.rate = 0.85;
+  utter.pitch = 1.0;
+  setVoiceStatus('يتحدث...', true);
+  utter.onend = () => setVoiceStatus('جاهز', false);
+  utter.onerror = () => setVoiceStatus('جاهز', false);
   speechSynthesis.speak(utter);
 }
 
-function speakNumber(n){
-  return n === 3 ? 'ثلاث' : n;
+// --- Unified speak ---
+function speakWith(text){
+  lastText = text;
+  if(gttsAudio){ gttsAudio.pause(); gttsAudio.src = ''; }
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  if(currentEngine === 'gtts'){
+    speakWithGTTS(text);
+  } else {
+    speakWithBrowser(text);
+  }
 }
+
+// --- Engine switcher UI ---
+function setEngine(engine){
+  currentEngine = engine;
+  document.getElementById('eng-gtts').classList.toggle('active', engine === 'gtts');
+  document.getElementById('eng-browser').classList.toggle('active', engine === 'browser');
+  localStorage.setItem('tts-engine', engine);
+}
+
+function setVoiceStatus(msg, speaking){
+  const el = document.getElementById('voice-status');
+  if(!el) return;
+  el.textContent = msg;
+  el.classList.toggle('speaking', speaking);
+}
+
+function testVoice(){
+  speakWith('مرحباً، هذا اختبار للصوت. الرقم خمسة، توجه إلى سرير رقم ثلاثة');
+}
+
+// Restore saved engine preference
+(function(){
+  const saved = localStorage.getItem('tts-engine');
+  if(saved === 'browser' || saved === 'gtts') setEngine(saved);
+})();
+
+// --- Number to Arabic words (short spoken form) ---
+// صيغة النطق المختصرة المستخدمة في النداءات
+const numWords = [
+  '','واحد','اثنان','ثلاث','أربع','خمس','ست','سبع','ثماني','تسع',
+  'عشرة','أحد عشر','اثنا عشر','ثلاثة عشر','أربعة عشر','خمسة عشر',
+  'ستة عشر','سبعة عشر','ثمانية عشر','تسعة عشر'
+];
+const numTens  = ['','','عشرون','ثلاثون','أربعون','خمسون','ستون','سبعون','ثمانون','تسعون'];
+const numHunds = ['','مئة','مئتان','ثلاثمئة','أربعمئة','خمسمئة','ستمئة','سبعمئة','ثمانمئة','تسعمئة'];
+
+function numberToArabicWords(n){
+  n = parseInt(n);
+  if(isNaN(n)) return String(n);
+  if(n === 0) return 'صفر';
+  if(n < 20) return numWords[n];
+  if(n < 100){
+    const t = Math.floor(n/10), o = n % 10;
+    return o ? numWords[o] + ' و' + numTens[t] : numTens[t];
+  }
+  if(n < 1000){
+    const h = Math.floor(n/100), rem = n % 100;
+    return rem ? numHunds[h] + ' و' + numberToArabicWords(rem) : numHunds[h];
+  }
+  return String(n);
+}
+
+function speakNumber(n){ return numberToArabicWords(n); }
 
 function announce(ticket, bed){
   const text = `الرقم ${speakNumber(ticket)}، توجه إلى سرير رقم ${speakNumber(bed)}`;
@@ -718,6 +1154,7 @@ document.getElementById('call-btn').onclick = () => {
   renderAll();
   saveState();
   announce(ticket, bedNum);
+  updateAI();
 };
 
 // ---------- Sync across tabs/windows ----------
@@ -742,8 +1179,82 @@ setInterval(async () => {
   }catch(e){ /* ignore */ }
 }, 2500);
 
+// ============================================================
+// ===== AI ENGINE =====
+// ============================================================
+
+function updateAI(){
+  const occupied = state.beds.filter(b => b.occupied).length;
+  const free     = state.beds.filter(b => !b.occupied);
+  const total    = state.history.length;
+
+  // stats
+  document.getElementById('ai-total').textContent    = toArabicDigits(total);
+  document.getElementById('ai-occupied').textContent = toArabicDigits(occupied);
+  document.getElementById('ai-free').textContent     = toArabicDigits(free.length);
+
+  // smart bed recommendation: pick beds with lowest numbers (typically closer to entrance)
+  const suggested = [...free].sort((a,b) => a.num - b.num).slice(0, 3);
+  const suggestEl = document.getElementById('ai-suggest-beds');
+  suggestEl.innerHTML = '';
+  if(suggested.length === 0){
+    suggestEl.innerHTML = '<span style="color:rgba(255,255,255,0.4);font-size:12px;">لا توجد أسرّة متاحة</span>';
+  } else {
+    suggested.forEach((bed, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'ai-suggest-bed' + (i === 0 ? ' best' : '');
+      btn.textContent = 'سرير ' + toArabicDigits(bed.num);
+      if(i === 0) btn.textContent = '⭐ سرير ' + toArabicDigits(bed.num);
+      btn.onclick = () => {
+        state.selectedBed = bed.num;
+        renderBedSelect();
+        // scroll into view smoothly
+        document.getElementById('bed-select').scrollIntoView({behavior:'smooth',block:'nearest'});
+      };
+      suggestEl.appendChild(btn);
+    });
+  }
+
+  // AI insight message
+  const msg = document.getElementById('ai-msg');
+  const status = document.getElementById('ai-status');
+
+  const occupancyPct = Math.round((occupied / state.beds.length) * 100);
+
+  if(total === 0){
+    msg.innerHTML = 'لم تبدأ النداءات بعد. عند الضغط على <strong>نداء المريض</strong> سيقوم الذكاء الاصطناعي بتحليل الحركة وتقديم توصيات.';
+  } else if(occupancyPct === 100){
+    msg.innerHTML = '⚠️ <strong>جميع الأسرّة مشغولة!</strong> يُوصى بإخلاء سرير قبل إجراء نداء جديد.';
+  } else if(occupancyPct >= 75){
+    msg.innerHTML = `الإشغال مرتفع (<strong>${toArabicDigits(occupancyPct)}%</strong>). تبقّى <strong>${toArabicDigits(free.length)}</strong> أسرّة. يُوصى بـ سرير <strong>${toArabicDigits(suggested[0]?.num)}</strong>.`;
+  } else if(occupancyPct >= 50){
+    msg.innerHTML = `إشغال متوسط (<strong>${toArabicDigits(occupancyPct)}%</strong>). أفضل خيار متاح: سرير <strong>${toArabicDigits(suggested[0]?.num)}</strong>.`;
+  } else {
+    const peak = getPeakHour();
+    msg.innerHTML = `الأسرّة متوفرة بشكل جيد (${toArabicDigits(occupancyPct)}% إشغال). ${peak ? 'أعلى نشاط في ' + peak + '.' : ''} يُوصى بـ سرير <strong>${toArabicDigits(suggested[0]?.num ?? '-')}</strong>.`;
+  }
+
+  status.textContent = 'آخر تحليل: ' + new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
+}
+
+function getPeakHour(){
+  if(state.history.length < 3) return null;
+  const hours = {};
+  state.history.forEach(h => {
+    // extract hour from time string like "٠٩:٣٠"
+    const raw = h.time || '';
+    const match = raw.match(/(\d+|[٠-٩]+):/);
+    if(match) hours[match[1]] = (hours[match[1]] || 0) + 1;
+  });
+  const peak = Object.entries(hours).sort((a,b) => b[1]-a[1])[0];
+  return peak ? peak[0] + ':00' : null;
+}
+
+// Run AI update every 5 seconds
+setInterval(updateAI, 5000);
+
 document.getElementById('footer-year').textContent = new Date().getFullYear();
-loadState();
+loadState().then(() => updateAI()).catch(() => updateAI());
 </script>
 </body>
 </html>
