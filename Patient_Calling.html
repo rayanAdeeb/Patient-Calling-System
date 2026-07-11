@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام نداء المرضى</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EFF5F6;
+    --surface:#FFFFFF;
+    --ink:#123C4D;
+    --muted:#5B7A85;
+    --primary:#0E7C86;
+    --primary-dark:#0A5F67;
+    --accent:#E3A72A;
+    --accent-glow:rgba(227,167,42,0.35);
+    --free:#2FA88A;
+    --free-bg:#E4F5F0;
+    --occupied:#C1503B;
+    --occupied-bg:#FBE8E4;
+    --line:#DCE9EB;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Tajawal',sans-serif;
+    min-height:100vh;
+  }
+  .app{
+    max-width:1200px;
+    margin:0 auto;
+    padding:20px 20px 60px;
+  }
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:14px;
+    padding:14px 20px;
+    background:var(--surface);
+    border-radius:var(--radius);
+    border:1px solid var(--line);
+    margin-bottom:22px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .brand .mark{
+    width:42px;height:42px;border-radius:12px;
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-family:'Cairo',sans-serif;font-weight:900;font-size:20px;
+    flex-shrink:0;
+  }
+  .brand h1{
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:19px;
+    margin:0;
+    color:var(--ink);
+  }
+  .brand p{
+    margin:2px 0 0;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .tabs{
+    display:flex;
+    background:var(--bg);
+    border-radius:12px;
+    padding:4px;
+    gap:4px;
+  }
+  .tabs button{
+    border:none;
+    background:transparent;
+    padding:10px 18px;
+    border-radius:9px;
+    font-family:'Tajawal',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color:var(--muted);
+    cursor:pointer;
+    transition:.2s;
+  }
+  .tabs button.active{
+    background:var(--primary);
+    color:#fff;
+  }
+
+  /* ===== DISPLAY SCREEN ===== */
+  .screen-view{ display:none; }
+  .screen-view.active{ display:block; }
+  .call-card{
+    background:linear-gradient(180deg,var(--primary-dark),var(--primary));
+    border-radius:28px;
+    padding:56px 30px;
+    text-align:center;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 20px 50px -20px rgba(10,95,103,0.5);
+  }
+  .call-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(255,255,255,0.10), transparent 60%);
+    pointer-events:none;
+  }
+  .call-eyebrow{
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:1px;
+    opacity:.8;
+    margin-bottom:18px;
+  }
+  .call-grid{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
+  }
+  .call-block{ position:relative; }
+  .call-block .label{
+    font-size:16px;
+    font-weight:500;
+    opacity:.85;
+    margin-bottom:6px;
+  }
+  .call-block .value{
+    font-family:'Cairo',sans-serif;
+    font-weight:900;
+    font-size:clamp(72px,14vw,150px);
+    line-height:1;
+    position:relative;
+    z-index:2;
+  }
+  .call-block.number .value{ color:var(--accent); }
+  .call-divider{
+    font-family:'Cairo',sans-serif;
+    font-size:clamp(30px,5vw,50px);
+    opacity:.5;
+    align-self:center;
+  }
+  .ring{
+    position:absolute;
+    inset:-20px;
+    border-radius:50%;
+    border:3px solid var(--accent-glow);
+    z-index:1;
+  }
+  @keyframes ringpulse{
+    0%{ transform:scale(0.85); opacity:.9; }
+    100%{ transform:scale(1.6); opacity:0; }
+  }
+  .ring.animate{ animation:ringpulse 1.4s ease-out; }
+  @keyframes popin{
+    0%{ transform:scale(.7); opacity:0; }
+    60%{ transform:scale(1.06); opacity:1; }
+    100%{ transform:scale(1); opacity:1; }
+  }
+  .value.animate{ animation:popin .5s ease; }
+
+  .strip-title{
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color:var(--muted);
+    margin:24px 4px 10px;
+  }
+  .history-strip{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    padding-bottom:6px;
+  }
+  .history-chip{
+    flex:0 0 auto;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px 18px;
+    text-align:center;
+    min-width:120px;
+  }
+  .history-chip .n{
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:26px;
+    color:var(--primary-dark);
+  }
+  .history-chip .b{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+
+  .beds-overview{
+    margin-top:26px;
+    display:grid;
+    grid-template-columns:repeat(8,1fr);
+    gap:8px;
+  }
+  .bed-mini{
+    aspect-ratio:1;
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:14px;
+    background:var(--free-bg);
+    color:var(--free);
+    border:1px solid var(--line);
+  }
+  .bed-mini.occupied{ background:var(--occupied-bg); color:var(--occupied); }
+
+  /* ===== CONTROL PANEL ===== */
+  .panel-view{ display:none; }
+  .panel-view.active{ display:grid; grid-template-columns:1.3fr 1fr; gap:20px; }
+  @media (max-width:860px){
+    .panel-view.active{ grid-template-columns:1fr; }
+  }
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px;
+  }
+  .card h2{
+    font-family:'Cairo',sans-serif;
+    font-size:16px;
+    margin:0 0 14px;
+    color:var(--ink);
+  }
+  .bed-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+  }
+  .bed-cell{
+    border-radius:14px;
+    padding:12px 8px;
+    text-align:center;
+    background:var(--free-bg);
+    border:1.5px solid var(--free);
+    cursor:pointer;
+    transition:.15s;
+    user-select:none;
+  }
+  .bed-cell:hover{ transform:translateY(-2px); }
+  .bed-cell .num{
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:22px;
+    color:var(--free);
+  }
+  .bed-cell .status{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .bed-cell.occupied{
+    background:var(--occupied-bg);
+    border-color:var(--occupied);
+  }
+  .bed-cell.occupied .num{ color:var(--occupied); }
+  .bed-cell.occupied .ticket{
+    font-size:12px;
+    font-weight:700;
+    color:var(--occupied);
+    margin-top:2px;
+  }
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .num-input{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .num-input input{
+    flex:1;
+    text-align:center;
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:24px;
+    padding:10px;
+    border-radius:12px;
+    border:1.5px solid var(--line);
+    color:var(--ink);
+    background:var(--bg);
+  }
+  .num-input button{
+    width:42px;height:42px;
+    border-radius:10px;
+    border:1.5px solid var(--line);
+    background:var(--surface);
+    font-size:18px;
+    font-weight:800;
+    color:var(--primary-dark);
+    cursor:pointer;
+  }
+  .bed-select{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .bed-opt{
+    padding:8px 12px;
+    border-radius:10px;
+    border:1.5px solid var(--line);
+    background:var(--bg);
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    color:var(--muted);
+    cursor:pointer;
+  }
+  .bed-opt.selected{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+  .btn-call{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:17px;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .btn-call:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+  }
+  .hint{
+    font-size:12px;
+    color:var(--muted);
+    margin-top:8px;
+    text-align:center;
+  }
+  .log{
+    margin-top:18px;
+    max-height:220px;
+    overflow-y:auto;
+  }
+  .log-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:9px 0;
+    border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .log-row:last-child{ border-bottom:none; }
+  .log-row .who{ font-weight:700; color:var(--ink); }
+  .log-row .time{ color:var(--muted); font-size:12px; }
+  .log-row button{
+    border:none;background:none;color:var(--primary);
+    font-weight:700;font-size:12px;cursor:pointer;
+  }
+  .empty{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    padding:20px 0;
+  }
+  ::-webkit-scrollbar{height:6px;width:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px;}
+  .footer-credit{
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:30px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="mark">ن</div>
+      <div>
+        <h1>نظام نداء المرضى</h1>
+        <p>استدعاء الأرقام وتوجيه المرضى إلى الأسرّة</p>
+      </div>
+    </div>
+    <div class="tabs">
+      <button id="tab-panel" class="active">لوحة التحكم</button>
+      <button id="tab-screen">شاشة العرض</button>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN VIEW ============ -->
+  <div class="screen-view active" id="screen-view">
+    <div class="call-card">
+      <div class="call-eyebrow">آخر نداء</div>
+      <div class="call-grid" id="call-grid">
+        <div class="call-block number">
+          <div class="ring" id="ring-number"></div>
+          <div class="label">الرقم</div>
+          <div class="value" id="disp-number">—</div>
+        </div>
+        <div class="call-divider">←</div>
+        <div class="call-block bed">
+          <div class="ring" id="ring-bed"></div>
+          <div class="label">توجه إلى سرير رقم</div>
+          <div class="value" id="disp-bed">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strip-title">الأرقام السابقة</div>
+    <div class="history-strip" id="history-strip">
+      <div class="empty">لا يوجد نداء بعد</div>
+    </div>
+
+    <div class="strip-title">حالة الأسرّة</div>
+    <div class="beds-overview" id="beds-overview"></div>
+  </div>
+
+  <!-- ============ PANEL VIEW ============ -->
+  <div class="panel-view active" id="panel-view">
+    <div class="card">
+      <h2>الأسرّة (١٦ سرير)</h2>
+      <div class="bed-grid" id="bed-grid"></div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>نداء مريض جديد</h2>
+        <div class="field">
+          <label>رقم المريض (١ - ٩٩٩)</label>
+          <div class="num-input">
+            <button id="num-minus">−</button>
+            <input type="number" id="ticket-number" min="1" max="999" value="1">
+            <button id="num-plus">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>اختر السرير</label>
+          <div class="bed-select" id="bed-select"></div>
+        </div>
+        <button class="btn-call" id="call-btn">📢 نداء المريض</button>
+        <div class="hint">سيتم نطق الرقم والسرير صوتيًا في شاشة العرض</div>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <h2>سجل النداءات</h2>
+        <div class="log" id="log"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-credit">© <span id="footer-year"></span> Rayan — جميع الحقوق محفوظة</div>
+
+</div>
+
+<script>
+const TOTAL_BEDS = 16;
+const STORAGE_KEY = 'clinic-queue-state';
+
+let state = {
+  beds: Array.from({length: TOTAL_BEDS}, (_, i) => ({ num: i+1, occupied: false, ticket: null })),
+  history: [], // {ticket, bed, time}
+  selectedBed: null
+};
+
+function defaultState(){
+  return {
+    beds: Array.from({length: TOTAL_BEDS}, (_, i) => ({ num: i+1, occupied: false, ticket: null })),
+    history: [],
+    selectedBed: null
+  };
+}
+
+async function loadState(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY, true);
+    if(res && res.value){
+      const parsed = JSON.parse(res.value);
+      state.beds = parsed.beds || defaultState().beds;
+      state.history = parsed.history || [];
+    }
+  }catch(e){
+    // no state yet
+  }
+  render();
+}
+
+async function saveState(){
+  try{
+    await window.storage.set(STORAGE_KEY, JSON.stringify({beds: state.beds, history: state.history}), true);
+  }catch(e){
+    console.error('تعذر حفظ البيانات', e);
+  }
+}
+
+// ---------- Tabs ----------
+const tabPanel = document.getElementById('tab-panel');
+const tabScreen = document.getElementById('tab-screen');
+const panelView = document.getElementById('panel-view');
+const screenView = document.getElementById('screen-view');
+
+tabPanel.onclick = () => {
+  tabPanel.classList.add('active'); tabScreen.classList.remove('active');
+  panelView.classList.add('active'); screenView.classList.remove('active');
+};
+tabScreen.onclick = () => {
+  tabScreen.classList.add('active'); tabPanel.classList.remove('active');
+  screenView.classList.add('active'); panelView.classList.remove('active');
+};
+
+// ---------- Number input ----------
+const ticketInput = document.getElementById('ticket-number');
+document.getElementById('num-minus').onclick = () => {
+  ticketInput.value = Math.max(1, (parseInt(ticketInput.value)||1) - 1);
+};
+document.getElementById('num-plus').onclick = () => {
+  ticketInput.value = Math.min(999, (parseInt(ticketInput.value)||1) + 1);
+};
+
+// ---------- Render bed grid (panel) ----------
+function renderBedGrid(){
+  const grid = document.getElementById('bed-grid');
+  grid.innerHTML = '';
+  state.beds.forEach(bed => {
+    const cell = document.createElement('div');
+    cell.className = 'bed-cell' + (bed.occupied ? ' occupied' : '');
+    cell.innerHTML = `
+      <div class="num">${toArabicDigits(bed.num)}</div>
+      <div class="status">${bed.occupied ? 'مشغول' : 'فاضي'}</div>
+      ${bed.occupied ? `<div class="ticket">مريض ${toArabicDigits(bed.ticket)}</div>` : ''}
+    `;
+    cell.onclick = () => {
+      if(bed.occupied){
+        bed.occupied = false;
+        bed.ticket = null;
+      }else{
+        state.selectedBed = bed.num;
+      }
+      renderAll();
+      saveState();
+    };
+    grid.appendChild(cell);
+  });
+}
+
+// ---------- Render bed select (call form) ----------
+function renderBedSelect(){
+  const container = document.getElementById('bed-select');
+  container.innerHTML = '';
+  const freeBeds = state.beds.filter(b => !b.occupied);
+  if(freeBeds.length === 0){
+    container.innerHTML = '<div class="empty">لا توجد أسرّة فاضية حاليًا</div>';
+    document.getElementById('call-btn').disabled = true;
+    return;
+  }
+  document.getElementById('call-btn').disabled = false;
+  if(!state.selectedBed || state.beds.find(b=>b.num===state.selectedBed)?.occupied){
+    state.selectedBed = freeBeds[0].num;
+  }
+  freeBeds.forEach(bed => {
+    const opt = document.createElement('div');
+    opt.className = 'bed-opt' + (bed.num === state.selectedBed ? ' selected' : '');
+    opt.textContent = 'سرير ' + toArabicDigits(bed.num);
+    opt.onclick = () => { state.selectedBed = bed.num; renderBedSelect(); };
+    container.appendChild(opt);
+  });
+}
+
+// ---------- Log ----------
+function renderLog(){
+  const log = document.getElementById('log');
+  if(state.history.length === 0){
+    log.innerHTML = '<div class="empty">لا يوجد سجل بعد</div>';
+    return;
+  }
+  log.innerHTML = '';
+  state.history.slice().reverse().forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'log-row';
+    row.innerHTML = `
+      <span class="who">مريض ${toArabicDigits(item.ticket)} → سرير ${toArabicDigits(item.bed)}</span>
+      <span class="time">${item.time}</span>
+      <button data-t="${item.ticket}" data-b="${item.bed}">إعادة نداء</button>
+    `;
+    row.querySelector('button').onclick = (e) => {
+      announce(item.ticket, item.bed);
+    };
+    log.appendChild(row);
+  });
+}
+
+// ---------- Screen render ----------
+function renderScreen(){
+  const last = state.history[state.history.length - 1];
+  document.getElementById('disp-number').textContent = last ? toArabicDigits(last.ticket) : '—';
+  document.getElementById('disp-bed').textContent = last ? toArabicDigits(last.bed) : '—';
+
+  const strip = document.getElementById('history-strip');
+  if(state.history.length === 0){
+    strip.innerHTML = '<div class="empty">لا يوجد نداء بعد</div>';
+  }else{
+    strip.innerHTML = '';
+    state.history.slice().reverse().slice(0, 12).forEach(item => {
+      const chip = document.createElement('div');
+      chip.className = 'history-chip';
+      chip.innerHTML = `<div class="n">${toArabicDigits(item.ticket)}</div><div class="b">سرير ${toArabicDigits(item.bed)}</div>`;
+      strip.appendChild(chip);
+    });
+  }
+
+  const overview = document.getElementById('beds-overview');
+  overview.innerHTML = '';
+  state.beds.forEach(bed => {
+    const mini = document.createElement('div');
+    mini.className = 'bed-mini' + (bed.occupied ? ' occupied' : '');
+    mini.textContent = toArabicDigits(bed.num);
+    overview.appendChild(mini);
+  });
+}
+
+function toArabicDigits(n){
+  const map = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  return String(n).split('').map(ch => /[0-9]/.test(ch) ? map[ch] : ch).join('');
+}
+
+function renderAll(){
+  renderBedGrid();
+  renderBedSelect();
+  renderLog();
+  renderScreen();
+}
+function render(){ renderAll(); }
+
+// ---------- Announce (TTS) ----------
+let arabicVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  arabicVoice = voices.find(v => v.lang && v.lang.startsWith('ar')) || null;
+}
+if('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+
+function speakWith(text){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ar-SA';
+  if(arabicVoice) utter.voice = arabicVoice;
+  utter.rate = 0.9;
+  speechSynthesis.speak(utter);
+}
+
+function speakNumber(n){
+  return n === 3 ? 'ثلاث' : n;
+}
+
+function announce(ticket, bed){
+  const text = `الرقم ${speakNumber(ticket)}، توجه إلى سرير رقم ${speakNumber(bed)}`;
+  speakWith(text);
+
+  // visual pulse
+  ['disp-number','disp-bed'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('animate'); void el.offsetWidth; el.classList.add('animate');
+  });
+  ['ring-number','ring-bed'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('animate'); void el.offsetWidth; el.classList.add('animate');
+  });
+}
+
+// ---------- Call button ----------
+document.getElementById('call-btn').onclick = () => {
+  const ticket = parseInt(ticketInput.value) || 1;
+  const bedNum = state.selectedBed;
+  const bed = state.beds.find(b => b.num === bedNum);
+  if(!bed || bed.occupied) return;
+
+  bed.occupied = true;
+  bed.ticket = ticket;
+
+  const now = new Date();
+  const time = now.toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit'});
+  state.history.push({ ticket, bed: bedNum, time });
+
+  ticketInput.value = Math.min(999, ticket + 1);
+
+  renderAll();
+  saveState();
+  announce(ticket, bedNum);
+};
+
+// ---------- Sync across tabs/windows ----------
+setInterval(async () => {
+  try{
+    const res = await window.storage.get(STORAGE_KEY, true);
+    if(res && res.value){
+      const parsed = JSON.parse(res.value);
+      const incomingLen = (parsed.history || []).length;
+      const currentLen = state.history.length;
+      state.beds = parsed.beds || state.beds;
+      const isNew = incomingLen > currentLen;
+      state.history = parsed.history || state.history;
+      if(isNew && screenView.classList.contains('active')){
+        const last = state.history[state.history.length - 1];
+        renderAll();
+        // announce only if screen view is the one open, avoid double announce on the caller's own tab
+      } else {
+        renderAll();
+      }
+    }
+  }catch(e){ /* ignore */ }
+}, 2500);
+
+document.getElementById('footer-year').textContent = new Date().getFullYear();
+loadState();
+</script>
+</body>
+</html>
