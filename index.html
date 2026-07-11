@@ -398,6 +398,210 @@
     border-top:1px solid var(--line);
   }
 
+  /* ===== SMART QUEUE ===== */
+  .queue-card{
+    background:linear-gradient(135deg,#0f1f2e,#0a1520);
+    border:1px solid rgba(0,200,160,0.3);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    margin-top:20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .queue-card::after{
+    content:'';
+    position:absolute;
+    bottom:-40px;left:-40px;
+    width:160px;height:160px;
+    background:radial-gradient(circle,rgba(0,200,160,0.08),transparent 70%);
+    pointer-events:none;
+  }
+  .queue-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .queue-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .queue-title h2{
+    margin:0;
+    font-family:'Cairo',sans-serif;
+    font-size:15px;
+    font-weight:800;
+    color:#e0faf5;
+  }
+  .q-badge{
+    background:rgba(0,200,160,0.15);
+    border:1px solid rgba(0,200,160,0.35);
+    color:#00c8a0;
+    font-size:11px;
+    font-weight:800;
+    padding:2px 10px;
+    border-radius:20px;
+  }
+  .q-count{
+    font-family:'Cairo',sans-serif;
+    font-size:13px;
+    color:rgba(0,200,160,0.7);
+  }
+  .queue-add{
+    display:flex;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .queue-add input{
+    flex:1;
+    padding:9px 14px;
+    border-radius:10px;
+    border:1.5px solid rgba(0,200,160,0.25);
+    background:rgba(255,255,255,0.04);
+    color:#e0faf5;
+    font-family:'Cairo',sans-serif;
+    font-size:16px;
+    font-weight:700;
+    text-align:center;
+  }
+  .queue-add input::placeholder{ color:rgba(255,255,255,0.25); }
+  .queue-add input:focus{ outline:none; border-color:rgba(0,200,160,0.6); }
+  .btn-add-queue{
+    padding:9px 18px;
+    border-radius:10px;
+    border:none;
+    background:linear-gradient(135deg,#00c8a0,#0e7c86);
+    color:#fff;
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:14px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:.2s;
+  }
+  .btn-add-queue:hover{ opacity:.85; }
+  .queue-auto-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+    padding:10px 14px;
+    background:rgba(0,200,160,0.06);
+    border-radius:10px;
+    border:1px solid rgba(0,200,160,0.15);
+  }
+  .toggle-auto{
+    width:40px;height:22px;
+    border-radius:11px;
+    background:rgba(255,255,255,0.1);
+    border:none;
+    cursor:pointer;
+    position:relative;
+    transition:.3s;
+    flex-shrink:0;
+  }
+  .toggle-auto::after{
+    content:'';
+    position:absolute;
+    top:3px;left:3px;
+    width:16px;height:16px;
+    border-radius:50%;
+    background:#fff;
+    transition:.3s;
+  }
+  .toggle-auto.on{ background:#00c8a0; }
+  .toggle-auto.on::after{ left:21px; }
+  .toggle-label{ font-size:13px; color:rgba(255,255,255,0.75); flex:1; }
+  .toggle-label strong{ color:#00c8a0; }
+  .queue-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    max-height:240px;
+    overflow-y:auto;
+  }
+  .queue-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(0,200,160,0.12);
+    border-radius:12px;
+    padding:10px 14px;
+    transition:.2s;
+    animation:qin .3s ease;
+  }
+  @keyframes qin{
+    from{opacity:0;transform:translateY(-6px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .queue-item.next-up{
+    border-color:rgba(0,200,160,0.5);
+    background:rgba(0,200,160,0.08);
+    box-shadow:0 0 12px rgba(0,200,160,0.15);
+  }
+  .q-pos{
+    width:26px;height:26px;
+    border-radius:8px;
+    background:rgba(255,255,255,0.06);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cairo',sans-serif;
+    font-size:12px;
+    font-weight:800;
+    color:rgba(255,255,255,0.4);
+    flex-shrink:0;
+  }
+  .queue-item.next-up .q-pos{ background:#00c8a0; color:#fff; }
+  .q-ticket{
+    font-family:'Cairo',sans-serif;
+    font-size:20px;
+    font-weight:800;
+    color:#e0faf5;
+    flex:1;
+  }
+  .q-wait{
+    font-size:11px;
+    color:rgba(0,200,160,0.7);
+    background:rgba(0,200,160,0.08);
+    padding:3px 8px;
+    border-radius:6px;
+    white-space:nowrap;
+  }
+  .q-now-badge{
+    font-size:10px;
+    font-weight:800;
+    color:#fff;
+    background:#00c8a0;
+    padding:3px 8px;
+    border-radius:6px;
+    animation:blinkbadge 1s ease-in-out infinite;
+  }
+  @keyframes blinkbadge{
+    0%,100%{opacity:1;}
+    50%{opacity:.5;}
+  }
+  .btn-remove-q{
+    width:26px;height:26px;
+    border-radius:7px;
+    border:none;
+    background:rgba(193,80,59,0.15);
+    color:var(--occupied);
+    font-size:16px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    line-height:1;
+    transition:.2s;
+    flex-shrink:0;
+  }
+  .btn-remove-q:hover{ background:rgba(193,80,59,0.3); }
+  .queue-empty{
+    text-align:center;
+    color:rgba(255,255,255,0.25);
+    font-size:13px;
+    padding:16px 0;
+  }
+
   /* ===== VOICE SETTINGS ===== */
   .voice-bar{
     background:var(--surface);
@@ -477,6 +681,7 @@
 
   /* ===== AI PANEL ===== */
   .ai-panel{
+    grid-column: 1 / -1;
     background:linear-gradient(135deg,#0d1117 0%,#0e2a3a 100%);
     border:1px solid rgba(0,220,180,0.25);
     border-radius:var(--radius);
@@ -643,49 +848,7 @@
     </div>
   </div>
 
- 
 
-  <!-- ===== AI PANEL ===== -->
-  <div class="ai-panel" id="ai-panel">
-    <div class="ai-header">
-      <div class="ai-icon">🤖</div>
-      <div class="ai-title">
-        <h3>المساعد الذكي</h3>
-        <p>يحلل النداءات ويوصي بأفضل سرير</p>
-      </div>
-      <span class="ai-badge">AI</span>
-    </div>
-
-    <div class="ai-grid">
-      <div class="ai-stat">
-        <div class="s-val" id="ai-total">0</div>
-        <div class="s-lbl">إجمالي النداءات</div>
-      </div>
-      <div class="ai-stat">
-        <div class="s-val" id="ai-occupied">0</div>
-        <div class="s-lbl">أسرّة مشغولة</div>
-      </div>
-      <div class="ai-stat">
-        <div class="s-val" id="ai-free">16</div>
-        <div class="s-lbl">أسرّة متاحة</div>
-      </div>
-    </div>
-
-    <div class="ai-insight" id="ai-insight">
-      <span class="ins-icon">💡</span>
-      <span class="ins-text" id="ai-msg">في انتظار البيانات...</span>
-    </div>
-
-    <div class="ai-suggest-row">
-      <span class="s-label">توصية الذكاء الاصطناعي:</span>
-      <div id="ai-suggest-beds"></div>
-    </div>
-
-    <div class="ai-thinking">
-      <div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>
-      <span id="ai-status">المساعد يعمل...</span>
-    </div>
-  </div>
 
   <!-- ============ SCREEN VIEW ============ -->
   <div class="screen-view active" id="screen-view">
@@ -717,6 +880,66 @@
 
   <!-- ============ PANEL VIEW ============ -->
   <div class="panel-view active" id="panel-view">
+
+    <!-- ===== AI PANEL (Horizontal layout at top) ===== -->
+    <div class="ai-panel" id="ai-panel">
+      <div class="ai-header">
+        <div class="ai-icon">🤖</div>
+        <div class="ai-title">
+          <h3>المساعد الذكي</h3>
+          <p>يحلل النداءات ويوصي بأفضل سرير</p>
+        </div>
+        <span class="ai-badge">AI</span>
+      </div>
+
+      <div class="ai-grid">
+        <div class="ai-stat">
+          <div class="s-val" id="ai-total">0</div>
+          <div class="s-lbl">إجمالي النداءات</div>
+        </div>
+        <div class="ai-stat">
+          <div class="s-val" id="ai-occupied">0</div>
+          <div class="s-lbl">أسرّة مشغولة</div>
+        </div>
+        <div class="ai-stat">
+          <div class="s-val" id="ai-free">16</div>
+          <div class="s-lbl">أسرّة متاحة</div>
+        </div>
+      </div>
+
+      <div class="ai-insight" id="ai-insight">
+        <span class="ins-icon">💡</span>
+        <span class="ins-text" id="ai-msg">في انتظار البيانات...</span>
+      </div>
+
+      <div class="ai-suggest-row">
+        <span class="s-label">توصية الذكاء الاصطناعي:</span>
+        <div id="ai-suggest-beds"></div>
+      </div>
+
+      <div class="ai-thinking">
+        <div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>
+        <span id="ai-status">المساعد يعمل...</span>
+      </div>
+    </div>
+
+    <!-- ===== VOICE SETTINGS BAR (hidden in background to avoid JS errors) ===== -->
+    <div style="display: none;">
+      <div class="voice-bar" id="voice-bar">
+        <span class="vb-label">🔊 محرك الصوت:</span>
+        <div class="engine-group">
+          <button class="engine-btn active" id="eng-gtts" onclick="setEngine('gtts')">
+            <span class="badge">مُوصى</span>Google TTS
+          </button>
+          <button class="engine-btn" id="eng-browser" onclick="setEngine('browser')">
+            متصفح (Web Speech)
+          </button>
+        </div>
+        <button class="btn-test-voice" onclick="testVoice()">🎧 تجربة الصوت</button>
+        <span class="voice-status" id="voice-status">جاهز</span>
+      </div>
+    </div>
+
     <div class="card">
       <h2>الأسرّة (١٦ سرير)</h2>
       <div class="bed-grid" id="bed-grid"></div>
@@ -745,6 +968,32 @@
         <h2>سجل النداءات</h2>
         <div class="log" id="log"></div>
       </div>
+
+      <!-- ===== SMART QUEUE CARD ===== -->
+      <div class="queue-card">
+        <div class="queue-header">
+          <div class="queue-title">
+            <span style="font-size:18px;">🧠</span>
+            <h2>قائمة الانتظار الذكية</h2>
+            <span class="q-badge">AI</span>
+          </div>
+          <span class="q-count" id="q-count">0 في الانتظار</span>
+        </div>
+
+        <div class="queue-add">
+          <input type="number" id="q-input" min="1" max="999" placeholder="رقم المريض" />
+          <button class="btn-add-queue" onclick="addToQueue()">+ أضف للقائمة</button>
+        </div>
+
+        <div class="queue-auto-row">
+          <button class="toggle-auto" id="auto-toggle" onclick="toggleAuto()"></button>
+          <span class="toggle-label">نداء <strong>تلقائي</strong> عند تحرر سرير</span>
+        </div>
+
+        <div class="queue-list" id="queue-list">
+          <div class="queue-empty">القائمة فارغة — أضف مريضًا من فوق</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -755,6 +1004,112 @@
 <script>
 const TOTAL_BEDS = 16;
 const STORAGE_KEY = 'clinic-queue-state';
+
+// ===== WAITING QUEUE STATE =====
+let waitingQueue = []; // [{ticket, addedAt}]
+let autoCallEnabled = false;
+
+function addToQueue(){
+  const input = document.getElementById('q-input');
+  const n = parseInt(input.value);
+  if(!n || n < 1 || n > 999) return;
+  // avoid duplicates
+  if(waitingQueue.find(x => x.ticket === n)){
+    input.value = '';
+    return;
+  }
+  waitingQueue.push({ ticket: n, addedAt: Date.now() });
+  input.value = '';
+  renderQueue();
+  saveQueueState();
+}
+
+// Allow Enter key on queue input
+document.addEventListener('DOMContentLoaded', () => {
+  const qi = document.getElementById('q-input');
+  if(qi) qi.addEventListener('keydown', e => { if(e.key==='Enter') addToQueue(); });
+});
+
+function removeFromQueue(ticket){
+  waitingQueue = waitingQueue.filter(x => x.ticket !== ticket);
+  renderQueue();
+  saveQueueState();
+}
+
+function toggleAuto(){
+  autoCallEnabled = !autoCallEnabled;
+  const btn = document.getElementById('auto-toggle');
+  btn.classList.toggle('on', autoCallEnabled);
+  localStorage.setItem('auto-call', autoCallEnabled ? '1' : '0');
+}
+
+function saveQueueState(){
+  try{ localStorage.setItem('waiting-queue', JSON.stringify(waitingQueue)); }catch(e){}
+}
+
+function loadQueueState(){
+  try{
+    const saved = localStorage.getItem('waiting-queue');
+    if(saved) waitingQueue = JSON.parse(saved);
+    const auto = localStorage.getItem('auto-call');
+    autoCallEnabled = auto === '1';
+    document.getElementById('auto-toggle').classList.toggle('on', autoCallEnabled);
+  }catch(e){}
+}
+
+function renderQueue(){
+  const list = document.getElementById('queue-list');
+  const count = document.getElementById('q-count');
+  count.textContent = waitingQueue.length + ' في الانتظار';
+  if(waitingQueue.length === 0){
+    list.innerHTML = '<div class="queue-empty">القائمة فارغة — أضف مريضًا من فوق</div>';
+    return;
+  }
+  list.innerHTML = '';
+  const now = Date.now();
+  waitingQueue.forEach((item, idx) => {
+    const waited = Math.floor((now - item.addedAt) / 60000);
+    const isNext = idx === 0;
+    const div = document.createElement('div');
+    div.className = 'queue-item' + (isNext ? ' next-up' : '');
+    div.innerHTML = `
+      <div class="q-pos">${idx + 1}</div>
+      <div class="q-ticket">رقم ${item.ticket}</div>
+      ${isNext ? '<span class="q-now-badge">التالي</span>' : ''}
+      <span class="q-wait">انتظر ${waited < 1 ? 'أقل من دقيقة' : waited + ' دق'}</span>
+      <button class="btn-remove-q" onclick="removeFromQueue(${item.ticket})" title="حذف">×</button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+// Called when a bed is freed — triggers auto-call if enabled
+function onBedFreed(){
+  if(!autoCallEnabled) return;
+  if(waitingQueue.length === 0) return;
+  const freeBeds = state.beds.filter(b => !b.occupied);
+  if(freeBeds.length === 0) return;
+  // pick best bed (lowest number = closest to entrance)
+  const bestBed = freeBeds.sort((a,b) => a.num - b.num)[0];
+  const next = waitingQueue[0];
+  // short delay so user sees the bed freed first
+  setTimeout(() => {
+    const bed = state.beds.find(b => b.num === bestBed.num);
+    if(!bed || bed.occupied) return;
+    bed.occupied = true;
+    bed.ticket = next.ticket;
+    const now = new Date();
+    const time = now.toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
+    state.history.push({ ticket: next.ticket, bed: bestBed.num, time });
+    waitingQueue.shift();
+    renderAll();
+    saveState();
+    saveQueueState();
+    renderQueue();
+    announce(next.ticket, bestBed.num);
+    updateAI();
+  }, 600);
+}
 
 let state = {
   beds: Array.from({length: TOTAL_BEDS}, (_, i) => ({ num: i+1, occupied: false, ticket: null })),
@@ -832,11 +1187,14 @@ function renderBedGrid(){
       if(bed.occupied){
         bed.occupied = false;
         bed.ticket = null;
+        renderAll();
+        saveState();
+        onBedFreed(); // ← AI auto-call hook
       }else{
         state.selectedBed = bed.num;
+        renderAll();
+        saveState();
       }
-      renderAll();
-      saveState();
     };
     grid.appendChild(cell);
   });
@@ -927,6 +1285,7 @@ function renderAll(){
   renderBedSelect();
   renderLog();
   renderScreen();
+  renderQueue();
 }
 function render(){ renderAll(); }
 
@@ -1240,8 +1599,11 @@ function getPeakHour(){
 // Run AI update every 5 seconds
 setInterval(updateAI, 5000);
 
+// Refresh wait times in queue every minute
+setInterval(renderQueue, 60000);
+
 document.getElementById('footer-year').textContent = new Date().getFullYear();
-loadState().then(() => updateAI()).catch(() => updateAI());
+loadState().then(() => { loadQueueState(); renderQueue(); updateAI(); }).catch(() => { loadQueueState(); renderQueue(); updateAI(); });
 </script>
 </body>
 </html>
